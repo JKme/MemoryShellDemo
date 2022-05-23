@@ -17,7 +17,6 @@ public class TestStream {
         byte[] myvar = "Any String you want".getBytes();
         gzipOutputStream.write(myvar);
         System.out.println(arrOut);
-//        outputStream = TestStream.base64Encode(text);
     }
 
 
